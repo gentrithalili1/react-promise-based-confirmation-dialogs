@@ -1,18 +1,11 @@
 import React, { PropsWithChildren, useState } from "react";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
-import {
-  ConfirmationContext,
-  ConfirmationContextType,
-} from "./ConfirmationContext";
+import { ConfirmationData, ConfirmParams } from "../../types";
+import { ConfirmationContext, ConfirmationContextType } from "./ConfirmationContext";
 
 interface ConfirmationContextProviderProps {}
 
-interface ConfirmationContextProviderState {
-  text?: string;
-  isOpen: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
+interface ConfirmationContextProviderState extends ConfirmationData {}
 
 const voidFunction = () => {};
 const defaultText = "Are you sure?";
@@ -27,19 +20,22 @@ export default function ConfirmationContextProvider(
     onCancel: voidFunction,
   });
 
-  function confirm(txt?: string) {
+  function confirm(params: ConfirmParams) {
+    const { text: txt, ...restParams } = params;
     const text = txt || defaultText;
+
     return new Promise((resolve, reject) => {
       setState({
+        ...restParams,
         text: text,
         isOpen: !state.isOpen,
-        onConfirm() {
+        onConfirm: () => {
           setState({ ...state, isOpen: false, text });
           resolve(true);
         },
-        onCancel() {
+        onCancel: (reason?: string) => {
           setState({ ...state, isOpen: false, text });
-          reject(false);
+          reject(reason);
         },
       });
     });

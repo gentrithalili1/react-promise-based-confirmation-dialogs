@@ -1,22 +1,17 @@
 import Modal from "../Modal/Modal";
+import Button from "../Button/Button";
+import { ConfirmationData } from "../../types";
 
 import "./ConfirmationModal.scss";
-import Button from "../Button/Button";
 
 export interface ConfirmationModalProps {
   showCloseButton?: boolean;
-  confirmationData: {
-    text?: string;
-    isOpen: boolean;
-    isLoading?: boolean;
-    onConfirm: () => void;
-    onCancel: () => void;
-  };
+  confirmationData: ConfirmationData;
 }
 
 export default function ConfirmationModal(props: ConfirmationModalProps) {
   const {
-    confirmationData: { onCancel, onConfirm, text, isOpen },
+    confirmationData: { text, description, isOpen, onCancel, onConfirm, customComponent },
   } = props;
 
   // const router = useRouter();
@@ -32,18 +27,30 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
     onCancel?.();
   };
 
+  const renderCustomComponent = () => {
+    const {
+      confirmationData: { customComponent, ...rest },
+    } = props;
+
+    return customComponent?.(rest);
+  };
+
   return (
     <Modal hideFooter open={isOpen} onClose={cancel} onConfirm={confirm}>
-      <div className="ConfirmationModal">
-        <h2>{text}</h2>
-
-        <div className="mt">
-          <Button className="mr" onClick={confirm}>
-            confirm
-          </Button>
-          <Button onClick={cancel}>reject</Button>
+      {customComponent ? (
+        renderCustomComponent()
+      ) : (
+        <div className="ConfirmationModal">
+          <h2>{text}</h2>
+          <p>{description}</p>
+          <div className="mt">
+            <Button className="mr" onClick={confirm}>
+              confirm
+            </Button>
+            <Button onClick={cancel}>reject</Button>
+          </div>
         </div>
-      </div>
+      )}
     </Modal>
   );
 }
