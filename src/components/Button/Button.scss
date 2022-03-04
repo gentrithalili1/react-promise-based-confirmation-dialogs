@@ -1,0 +1,9 @@
+.Button {
+  background-color: #dbdbdb;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  &:hover {
+    background-color: #cbcbcb;
+  }
+}
