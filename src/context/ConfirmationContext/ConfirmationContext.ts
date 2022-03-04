@@ -4,9 +4,10 @@ const defaultContext = {
   isOpen: false,
   confirm: () => new Promise((resolve) => resolve),
 };
+
 export interface ConfirmationContextType {
   isOpen: boolean;
-  confirm: (text?: string) => any;
+  confirm: (text?: string) => Promise<any>;
 }
 
 export const ConfirmationContext =

@@ -1,6 +1,7 @@
 import Modal from "../Modal/Modal";
 
 import "./ConfirmationModal.scss";
+import Button from "../Button/Button";
 
 export interface ConfirmationModalProps {
   showCloseButton?: boolean;
@@ -14,7 +15,9 @@ export interface ConfirmationModalProps {
 }
 
 export default function ConfirmationModal(props: ConfirmationModalProps) {
-  const { confirmationData } = props;
+  const {
+    confirmationData: { onCancel, onConfirm, text, isOpen },
+  } = props;
 
   // const router = useRouter();
   // useEffect(() => {
@@ -22,24 +25,24 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
   // }, [router.location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const confirm = () => {
-    confirmationData.onConfirm?.();
+    onConfirm?.();
   };
 
   const cancel = () => {
-    confirmationData.onCancel?.();
+    onCancel?.();
   };
 
   return (
-    <Modal
-      open={confirmationData.isOpen}
-      onClose={cancel}
-      // onConfirm={confirm}
-      // title={confirmationData.text}
-      // confirmLabel="PO"
-      // cancelLabel="JO"
-    >
+    <Modal hideFooter open={isOpen} onClose={cancel} onConfirm={confirm}>
       <div className="ConfirmationModal">
-        <h2>{confirmationData.text}</h2>
+        <h2>{text}</h2>
+
+        <div className="mt">
+          <Button className="mr" onClick={confirm}>
+            confirm
+          </Button>
+          <Button onClick={cancel}>reject</Button>
+        </div>
       </div>
     </Modal>
   );

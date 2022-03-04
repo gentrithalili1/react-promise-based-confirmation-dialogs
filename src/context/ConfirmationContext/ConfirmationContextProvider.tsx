@@ -1,13 +1,11 @@
-import React, { ReactNode, useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import {
   ConfirmationContext,
   ConfirmationContextType,
 } from "./ConfirmationContext";
 
-interface ConfirmationContextProviderProps {
-  children: ReactNode;
-}
+interface ConfirmationContextProviderProps {}
 
 interface ConfirmationContextProviderState {
   text?: string;
@@ -19,7 +17,7 @@ interface ConfirmationContextProviderState {
 const defaultText = "Are you sure?";
 
 export default function ConfirmationContextProvider(
-  props: ConfirmationContextProviderProps
+  props: PropsWithChildren<ConfirmationContextProviderProps>
 ) {
   const [state, setState] = useState<ConfirmationContextProviderState>({
     text: defaultText,

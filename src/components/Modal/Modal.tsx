@@ -8,17 +8,18 @@ interface ModalProps {
   hideFooter?: boolean;
   title?: string;
   onClose?: () => void;
+  onConfirm?: () => void;
 }
 
 export default function Modal(props: PropsWithChildren<ModalProps>) {
-  const { open, hideFooter, title, children, onClose } = props;
+  const { open, hideFooter, title, children, onClose, onConfirm } = props;
 
   return (
     <div className={`Modal ${open ? "Modal--visible" : ""}`.trimEnd()}>
       <div className="Modal__wrapper">
         <div className="Modal__head">
           <h3>{title}</h3>
-          <Button onClick={() => onClose?.()} className="Modal__close">
+          <Button onClick={onClose} className="Modal__close">
             X
           </Button>
         </div>
@@ -27,8 +28,8 @@ export default function Modal(props: PropsWithChildren<ModalProps>) {
 
         {!hideFooter && (
           <div className="Modal__footer">
-            <Button>Yes</Button>
-            <Button>No</Button>
+            <Button onClick={onConfirm}>Yes</Button>
+            <Button onClick={onClose}>No</Button>
           </div>
         )}
       </div>
