@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
 
 const defaultContext = {
-  isOpen: false,
   confirm: () => new Promise((resolve) => resolve),
 };
 
 export interface ConfirmationContextType {
-  isOpen: boolean;
   confirm: (text?: string) => Promise<any>;
 }
 

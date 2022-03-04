@@ -14,6 +14,7 @@ interface ConfirmationContextProviderState {
   onCancel: () => void;
 }
 
+const voidFunction = () => {};
 const defaultText = "Are you sure?";
 
 export default function ConfirmationContextProvider(
@@ -22,8 +23,8 @@ export default function ConfirmationContextProvider(
   const [state, setState] = useState<ConfirmationContextProviderState>({
     text: defaultText,
     isOpen: false,
-    onConfirm: () => {},
-    onCancel: () => {},
+    onConfirm: voidFunction,
+    onCancel: voidFunction,
   });
 
   function confirm(txt?: string) {
@@ -33,11 +34,11 @@ export default function ConfirmationContextProvider(
         text: text,
         isOpen: !state.isOpen,
         onConfirm() {
-          setState({ ...state, isOpen: false, text: text });
+          setState({ ...state, isOpen: false, text });
           resolve(true);
         },
         onCancel() {
-          setState({ ...state, isOpen: false, text: text });
+          setState({ ...state, isOpen: false, text });
           reject(false);
         },
       });
@@ -45,7 +46,6 @@ export default function ConfirmationContextProvider(
   }
 
   const context: ConfirmationContextType = {
-    isOpen: state.isOpen,
     confirm: confirm,
   };
 
